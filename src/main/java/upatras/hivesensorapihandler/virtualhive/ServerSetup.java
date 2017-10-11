@@ -5,10 +5,30 @@
  */
 package upatras.hivesensorapihandler.virtualhive;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Paris
  */
 public class ServerSetup {
-    
+
+    public static ArrayList<VirtualHive> hiveservers = new ArrayList<>();
+
+    public static void startup(int count, boolean retryoncrash) {
+        for (int i = 0; i < count; i++) {
+            try {
+                hiveservers.add(new VirtualHive(10000 + i));
+                hiveservers.get(i).start();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }
+    }
+
+    public static void shutdown() throws Exception {
+        for (int i = 0; i < hiveservers.size(); i++) {
+            hiveservers.get(i).shutdown();
+        }
+    }
 }
