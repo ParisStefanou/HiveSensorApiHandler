@@ -26,13 +26,18 @@ public class DataGeneratorEntry {
         login.put("username", "admin");
         login.put("password", "admin");
 
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+        {
+            JsonElement je = jp.parse(login.toString());
+            String prettyJsonString = gson.toJson(je);
+            System.out.println("login json:" + prettyJsonString);
+        }
         JSONObject response = ch.AuthorizeConnectionRequest(login);
 
         if (response != null) {
             System.out.println("Connection accepted, json response:\n");
 
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonParser jp = new JsonParser();
             JsonElement je = jp.parse(response.toString());
             String prettyJsonString = gson.toJson(je);
             System.out.println(prettyJsonString);
