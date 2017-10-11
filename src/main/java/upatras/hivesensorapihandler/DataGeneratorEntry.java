@@ -5,11 +5,9 @@
  */
 package upatras.hivesensorapihandler;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import upatras.hivesensorapihandler.utils.JSONUtils;
 import upatras.hivesensorapihandler.virtualhive.ConnectionHandler;
 
 /**
@@ -23,25 +21,22 @@ public class DataGeneratorEntry {
         ConnectionHandler ch = new ConnectionHandler();
 
         JSONObject login = new JSONObject();
-        login.put("username", "admin");
-        login.put("password", "admin");
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonParser jp = new JsonParser();
-        {
-            JsonElement je = jp.parse(login.toString());
-            String prettyJsonString = gson.toJson(je);
-            System.out.println("login json:" + prettyJsonString);
-        }
+        JSONArray sessions = new JSONArray();
+        JSONObject session = new JSONObject();
+
+        session.put("username", "admin");
+        session.put("password", "admin");
+        sessions.put(session);
+
+        login.put("sessions", sessions);
+
+        System.out.println("login json:" + JSONUtils.prettyprint(login));
+
         JSONObject response = ch.AuthorizeConnectionRequest(login);
 
         if (response != null) {
-            System.out.println("Connection accepted, json response:\n");
-
-            JsonElement je = jp.parse(response.toString());
-            String prettyJsonString = gson.toJson(je);
-            System.out.println(prettyJsonString);
-
+            System.out.println("Connection accepted, json response:\n" + JSONUtils.prettyprint(response));
         } else {
             System.err.println("Connection refused");
         }

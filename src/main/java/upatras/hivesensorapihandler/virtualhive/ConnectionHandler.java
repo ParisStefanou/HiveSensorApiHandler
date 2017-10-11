@@ -21,7 +21,6 @@ public class ConnectionHandler {
 
     public ConnectionHandler() {
         authorized.put("admin", "admin");
-
     }
 
     /*
@@ -35,8 +34,10 @@ public class ConnectionHandler {
      */
     public JSONObject AuthorizeConnectionRequest(JSONObject request) {
 
-        String username = request.get("username").toString();
-        String password = request.get("password").toString();
+        JSONArray sessions = request.getJSONArray("sessions");
+        JSONObject session = (JSONObject) sessions.get(0);
+        String username = session.getString("username");
+        String password = session.getString("password");
 
         if (authorized.get(username) != null && authorized.get(username).equals(password)) {
             return ResponseGenerator(username, password);
@@ -72,8 +73,7 @@ public class ConnectionHandler {
         response.put("linked", new JSONObject());
 
         JSONObject[] sessions = new JSONObject[1];
-        
-        
+
         JSONObject session = new JSONObject();
         String id = Long.toString(NumberGenerator.random.nextInt(Integer.MAX_VALUE) % 99999999999L);
         session.put("id", id);
