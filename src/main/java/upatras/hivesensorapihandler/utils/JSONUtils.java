@@ -24,5 +24,9 @@ public class JSONUtils {
         JsonElement je = jp.parse(json.toString());
         return gson.toJson(je);
     }
+        public static String prettyprint(String jsonstring) {
+        JsonElement je = jp.parse(jsonstring);
+        return gson.toJson(je);
+    }
 
 }

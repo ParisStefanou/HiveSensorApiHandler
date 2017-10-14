@@ -20,7 +20,7 @@ import upatras.hivesensorapihandler.utils.JSONUtils;
  * @author Paris
  */
 /*
- AuthenticationHandler ch = new AuthenticationHandler();
+ HiveRequestHandler ch = new HiveRequestHandler();
 
         JSONObject login = new JSONObject();
 
@@ -67,11 +67,11 @@ public class ConnectionHandlerTest {
     }
 
     /**
-     * Test of AuthorizeConnectionRequest method, of class AuthenticationHandler.
+     * Test of AuthorizeConnectionRequest method, of class HiveRequestHandler.
      */
     @Test
     public void testAuthorizeConnectionRequest() {
-        AuthenticationHandler ch = new AuthenticationHandler();
+        AuthenticationHandler ah = new AuthenticationHandler();
 
         JSONObject login = new JSONObject();
 
@@ -86,7 +86,7 @@ public class ConnectionHandlerTest {
 
         System.out.println("login json:" + JSONUtils.prettyprint(login));
 
-        JSONObject response = ch.AuthorizeConnectionRequest(login);
+        JSONObject response = ah.AuthorizeConnectionRequest(login);
 
         if (response != null) {
             System.out.println("Connection accepted, json response:\n" + JSONUtils.prettyprint(response));
@@ -97,14 +97,14 @@ public class ConnectionHandlerTest {
     }
 
     /**
-     * Test of ResponseGenerator method, of class AuthenticationHandler.
+     * Test of ResponseGenerator method, of class HiveRequestHandler.
      */
     @Test
     public void testResponseGenerator() {
         System.out.println("ResponseGenerator");
         String username = "";
         String password = "";
-        AuthenticationHandler instance = new AuthenticationHandler();
+        HiveRequestHandler instance = new HiveRequestHandler();
         JSONObject expResult = null;
         JSONObject result = instance.ResponseGenerator(username, password);
         assertEquals(expResult, result);

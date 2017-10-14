@@ -43,53 +43,55 @@ public class PostGetRequest {
         session.put(data);
         request.put("sessions", session);
 
-        String response = postrequest("127.0.0.1", 10000, null, request.toString());
+        String response = postrequest("127.0.0.1", "/auth/sessions", 10000, null, request.toString());
         System.out.println(response);
 
     }
 
-    public static String postrequest(String ip, Integer port, ArrayList<Pair<String, String>> parameters, String body) {
+    public static String postrequest(String ip, String servlet_path, Integer port, ArrayList<Pair<String, String>> parameters, String body) {
 
-            HttpClient httpclient = HttpClients.createDefault();
-            HttpPost httppost = new HttpPost("http://" + ip + ":" + port);
+        HttpClient httpclient = HttpClients.createDefault();
+        String full_url = "http://" + ip + ":" + port + servlet_path;
+        System.out.println("will connect to " + full_url);
+        HttpPost httppost = new HttpPost(full_url);
 
-            List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<>();
 
-            if (parameters != null) {
-                for (int i = 0; i < parameters.size(); i++) {
-                    params.add(new BasicNameValuePair(parameters.get(i).getKey(), parameters.get(i).getValue()));
-                }
-                try {
-                    httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-                } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        if (parameters != null) {
+            for (int i = 0; i < parameters.size(); i++) {
+                params.add(new BasicNameValuePair(parameters.get(i).getKey(), parameters.get(i).getValue()));
             }
-
-            if (body != null) {
-                try {
-                    StringEntity postingString = new StringEntity(body);
-                    httppost.setEntity(postingString);
-                    httppost.setHeader("content-type", "application/json");
-                } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
             try {
-
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-
-                if (entity != null) {
-                    String jsonString = EntityUtils.toString(response.getEntity());
-                    return jsonString;
-                }
+                httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException | UnsupportedOperationException ex) {
+            }
+        }
+
+        if (body != null) {
+            try {
+                StringEntity postingString = new StringEntity(body);
+                httppost.setEntity(postingString);
+                httppost.setHeader("content-type", "application/json");
+            } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return null;
+        }
+
+        try {
+
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                String jsonString = EntityUtils.toString(response.getEntity());
+                return jsonString;
+            }
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | UnsupportedOperationException ex) {
+            Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
