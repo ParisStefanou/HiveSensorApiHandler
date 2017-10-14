@@ -40,10 +40,12 @@ public class VirtualHive extends Thread {
         server = new Server(port);
         try {
             server.start();
+            server.setHandler(new AuthenticationHandler());
         } catch (Exception ex) {
             System.err.println("Server running on port " + port + " encountered an error");
             System.err.println(ex);
         }
+
         started.release();
         try {
             server.join();

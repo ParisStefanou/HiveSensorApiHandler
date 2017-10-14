@@ -20,7 +20,7 @@ import upatras.hivesensorapihandler.utils.JSONUtils;
  * @author Paris
  */
 /*
- ConnectionHandler ch = new ConnectionHandler();
+ AuthenticationHandler ch = new AuthenticationHandler();
 
         JSONObject login = new JSONObject();
 
@@ -67,11 +67,11 @@ public class ConnectionHandlerTest {
     }
 
     /**
-     * Test of AuthorizeConnectionRequest method, of class ConnectionHandler.
+     * Test of AuthorizeConnectionRequest method, of class AuthenticationHandler.
      */
     @Test
     public void testAuthorizeConnectionRequest() {
-        ConnectionHandler ch = new ConnectionHandler();
+        AuthenticationHandler ch = new AuthenticationHandler();
 
         JSONObject login = new JSONObject();
 
@@ -97,14 +97,14 @@ public class ConnectionHandlerTest {
     }
 
     /**
-     * Test of ResponseGenerator method, of class ConnectionHandler.
+     * Test of ResponseGenerator method, of class AuthenticationHandler.
      */
     @Test
     public void testResponseGenerator() {
         System.out.println("ResponseGenerator");
         String username = "";
         String password = "";
-        ConnectionHandler instance = new ConnectionHandler();
+        AuthenticationHandler instance = new AuthenticationHandler();
         JSONObject expResult = null;
         JSONObject result = instance.ResponseGenerator(username, password);
         assertEquals(expResult, result);
