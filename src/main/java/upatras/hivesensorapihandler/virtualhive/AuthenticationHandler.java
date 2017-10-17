@@ -78,7 +78,11 @@ public class AuthenticationHandler {
                     response.flushBuffer();
                     LOGGER.info("sucessfully handled a request");
                 } else {
+                    LOGGER.warning("authentication failed");
+                    response.setContentType("application/json");
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.getWriter().println("forbidden");
+                    response.flushBuffer();
                 }
             }
 

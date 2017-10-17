@@ -47,25 +47,6 @@ import upatras.hivesensorapihandler.utils.JSONUtils;
  */
 public class ConnectionHandlerTest {
 
-    public ConnectionHandlerTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Test of AuthorizeConnectionRequest method, of class HiveRequestHandler.
      */
@@ -101,15 +82,23 @@ public class ConnectionHandlerTest {
      */
     @Test
     public void testResponseGenerator() {
-        System.out.println("ResponseGenerator");
-        String username = "";
-        String password = "";
-        HiveRequestHandler instance = new HiveRequestHandler();
-        JSONObject expResult = null;
+
+        String username = "admin";
+        String password = "admin";
+        AuthenticationHandler instance = new AuthenticationHandler();
         JSONObject result = instance.ResponseGenerator(username, password);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        if (!result.toString().contains("sessionId")) {
+            fail("Should have returned a correct session Id");
+        }
+
+        String username2 = "admin";
+        String password2 = "admin2";
+        JSONObject result2 = instance.ResponseGenerator(username2, password2);
+
+        if (result2 != null) {
+            fail("Should have returned null");
+        }
     }
 
 }
