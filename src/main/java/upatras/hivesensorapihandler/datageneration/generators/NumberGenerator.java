@@ -13,6 +13,18 @@ import java.util.Random;
  */
 public class NumberGenerator {
 
-    public static Random random = new Random();
+    public static Random random = new Random(0);
+
+    double prevtemp = 24;
+    long counter = 0;
+
+    public double generateTemperature() {
+
+        double change = (random.nextDouble()-0.5) * 10 * Math.sin(counter++ / 25.0 * Math.PI);
+
+        prevtemp = prevtemp + change;
+        return prevtemp;
+
+    }
 
 }

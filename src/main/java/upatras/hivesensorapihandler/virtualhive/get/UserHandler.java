@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package upatras.hivesensorapihandler.virtualhive;
+package upatras.hivesensorapihandler.virtualhive.get;
 
 /**
  *
  * @author Paris
  */
-public class EventHandler {
+public class UserHandler {
     
 }

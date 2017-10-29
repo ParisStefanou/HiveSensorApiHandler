@@ -31,22 +31,6 @@ import org.json.JSONObject;
  */
 public class HttpRequests {
 
-    public static void main(String[] args) {
-        JSONObject request = new JSONObject();
-        JSONArray session = new JSONArray();
-
-        JSONObject data = new JSONObject();
-        data.put("username", "admin");
-        data.put("password", "admin");
-        data.put("caller", "WEB");
-
-        session.put(data);
-        request.put("sessions", session);
-
-        String response = postrequest("127.0.0.1", "/auth/sessions", 10000, null, request.toString());
-        System.out.println(response);
-
-    }
 
     public static String postrequest(String ip, String servlet_path, Integer port, ArrayList<Pair<String, String>> parameters, String body) {
 

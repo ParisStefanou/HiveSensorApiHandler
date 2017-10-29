@@ -19,13 +19,13 @@ public class KeyGenerator {
 
     static {
         for (char i = 'A'; i <= 'Z'; i++) {
-            allowedchars.add( i);
+            allowedchars.add(i);
         }
         for (char i = '0'; i <= '9'; i++) {
-            allowedchars.add( i);
+            allowedchars.add(i);
         }
         for (char i = 'a'; i <= 'z'; i++) {
-            allowedchars.add( i);
+            allowedchars.add(i);
         }
 
     }
@@ -36,7 +36,25 @@ public class KeyGenerator {
 
     }
 
-    public static String generatesessionkey(String id) {
+    public static String generateNodeId() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            sb.append(generatechar());
+        }
+        sb.append('-');
+        for (int k = 0; k < 3; k++) {
+            for (int i = 0; i < 4; i++) {
+                sb.append(generatechar());
+            }
+            sb.append('-');
+        }
+        for (int i = 0; i < 8; i++) {
+            sb.append(generatechar());
+        }
+        return sb.toString();
+    }
+
+    public static String generateSessionKey(String node_id) {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 8; i++) {
@@ -49,7 +67,25 @@ public class KeyGenerator {
             }
             sb.append('-');
         }
-        sb.append(id);
+        sb.append(node_id);
+
+        return sb.toString();
+
+    }
+
+    public static String generateDeviceId(String node_id) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            sb.append(generatechar());
+        }
+        sb.append('-');
+        for (int k = 0; k < 3; k++) {
+            for (int i = 0; i < 4; i++) {
+                sb.append(generatechar());
+            }
+            sb.append('-');
+        }
+        sb.append(node_id);
 
         return sb.toString();
 

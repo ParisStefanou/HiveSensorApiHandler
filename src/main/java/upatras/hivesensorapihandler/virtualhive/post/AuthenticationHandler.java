@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package upatras.hivesensorapihandler.virtualhive;
+package upatras.hivesensorapihandler.virtualhive.post;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import upatras.hivesensorapihandler.datageneration.generators.KeyGenerator;
 import upatras.hivesensorapihandler.datageneration.generators.NumberGenerator;
 import upatras.hivesensorapihandler.utils.JSONUtils;
+import upatras.hivesensorapihandler.virtualhive.HiveRequestHandler;
 
 /**
  *
@@ -98,15 +99,6 @@ public class AuthenticationHandler {
         }
     }
 
-    /*
-    {
-	"sessions": [{
-		"username": "{{username}}",
-		"password": "{{password}}",
-		"caller": "WEB"
-	}]
-}
-     */
     public JSONObject AuthorizeConnectionRequest(JSONObject request) {
 
         try {
@@ -117,7 +109,7 @@ public class AuthenticationHandler {
             String caller = session.getString("caller");
 
             if (authorized.get(username) != null && authorized.get(username).equals(password)) {
-                return ResponseGenerator(username, password);
+                return response(username, password);
 
             } else {
                 return null;
@@ -145,7 +137,7 @@ public class AuthenticationHandler {
 	}]
     
      */
-    public JSONObject ResponseGenerator(String username, String password) {
+    public JSONObject response(String username, String password) {
         JSONObject response = new JSONObject();
         String emptyarray = null;
 
@@ -160,7 +152,7 @@ public class AuthenticationHandler {
         session.put("id", id);
         session.put("links", emptyarray);
         session.put("username", username);
-        session.put("userId", KeyGenerator.generatesessionkey(id));
+        session.put("userId", KeyGenerator.generateSessionKey(id));
         session.put("extCustomerLevel", "1");
         session.put("latestSupportedApiVersion", "6");
 

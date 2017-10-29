@@ -5,6 +5,7 @@
  */
 package upatras.hivesensorapihandler.virtualhive;
 
+import upatras.hivesensorapihandler.virtualhive.post.AuthenticationHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
@@ -78,7 +79,7 @@ public class ConnectionHandlerTest {
     }
 
     /**
-     * Test of ResponseGenerator method, of class HiveRequestHandler.
+     * Test of response method, of class HiveRequestHandler.
      */
     @Test
     public void testResponseGenerator() {
@@ -86,7 +87,7 @@ public class ConnectionHandlerTest {
         String username = "admin";
         String password = "admin";
         AuthenticationHandler instance = new AuthenticationHandler();
-        JSONObject result = instance.ResponseGenerator(username, password);
+        JSONObject result = instance.response(username, password);
 
         if (!result.toString().contains("sessionId")) {
             fail("Should have returned a correct session Id");
@@ -94,7 +95,7 @@ public class ConnectionHandlerTest {
 
         String username2 = "admin";
         String password2 = "admin2";
-        JSONObject result2 = instance.ResponseGenerator(username2, password2);
+        JSONObject result2 = instance.response(username2, password2);
 
         if (result2 != null) {
             fail("Should have returned null");

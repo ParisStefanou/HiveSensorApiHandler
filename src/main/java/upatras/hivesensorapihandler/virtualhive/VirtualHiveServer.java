@@ -20,7 +20,7 @@ public class VirtualHiveServer extends Thread {
     Semaphore started = new Semaphore(0);
     private static final Logger LOGGER = Logger.getLogger(VirtualHiveServer.class.getName());
 
-    final int port;
+    public final int port;
 
     public VirtualHiveServer(int port) {
         this.port = port;
@@ -41,10 +41,10 @@ public class VirtualHiveServer extends Thread {
         server = new Server(port);
         try {
             server.start();
-            server.setHandler(new HiveRequestHandler());
+            server.setHandler(new HiveRequestHandler(this));
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Server running on port " + port + " encountered an error");
-            LOGGER.log(Level.SEVERE, ex.toString());
+            ex.printStackTrace();
         }
 
         started.release();
@@ -52,7 +52,7 @@ public class VirtualHiveServer extends Thread {
             server.join();
         } catch (InterruptedException ex) {
             LOGGER.log(Level.SEVERE, "Server running on port " + port + " encountered an error");
-            LOGGER.log(Level.SEVERE, ex.toString());
+            ex.printStackTrace();
         }
 
     }
