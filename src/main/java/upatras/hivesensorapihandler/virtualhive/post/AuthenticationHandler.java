@@ -70,7 +70,17 @@ public class AuthenticationHandler {
                 postdata = sb.toString();
                 LOGGER.info("post request contained data: " + JSONUtils.prettyprint(postdata));
 
-                JSONObject responsejson = AuthorizeConnectionRequest(new JSONObject(postdata));
+                JSONObject jsonpost;
+
+                try {
+                    jsonpost = new JSONObject(postdata);
+
+                } catch (Exception ex) {
+                    LOGGER.severe("invalid json in post");
+                    return;
+                }
+
+                JSONObject responsejson = AuthorizeConnectionRequest(jsonpost);
 
                 if (responsejson != null) {
                     response.setContentType("application/json");
