@@ -19,18 +19,26 @@ import org.mortbay.jetty.handler.AbstractHandler;
 public class HiveRequestHandler extends AbstractHandler {
 
     AuthenticationHandler authh = new AuthenticationHandler();
-    ActionHandler acthandler = new ActionHandler();
-    ScanningHandler scanh = new ScanningHandler();
+    DeviceListHandler scanh = new DeviceListHandler();
 
     private static final Logger LOGGER = Logger.getLogger(HiveRequestHandler.class.getName());
 
     @Override
     public void handle(String string, HttpServletRequest baseRequest, HttpServletResponse response, int i) throws IOException, ServletException {
-        if (string.equals("/auth/sessions")) {
-            authh.handle(string, baseRequest, response, i);
-        } else if (false) {
 
-        } else {
+        String trimmedstring = string.trim();
+
+        if (trimmedstring.equals("/auth/sessions")) {
+            authh.handle(string, baseRequest, response, i);
+        } else if (trimmedstring.equals("/nodes")) {
+
+        } else if (trimmedstring.equals("/events/")) {
+
+        } else if (trimmedstring.equals("/channels/")) {
+
+        }else if (trimmedstring.equals("/users/")) {
+
+        }else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             LOGGER.warning("Connection request has been dropped, didn't match any of the servlet paths");
         }

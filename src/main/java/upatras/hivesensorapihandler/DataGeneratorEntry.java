@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import upatras.hivesensorapihandler.virtualhive.ServerSetup;
+import upatras.hivesensorapihandler.virtualhive.ServerGenerator;
 
 /**
  *
@@ -18,8 +18,17 @@ import upatras.hivesensorapihandler.virtualhive.ServerSetup;
  */
 public class DataGeneratorEntry {
 
-    public static void main(String[] agrs) {
-        ServerSetup.startup(1, true);
+    public static void main(String[] args) {
+
+        int serveramount = 1;
+
+        if (args.length == 0) {
+            System.out.println(" [amount of servers to start] default of 1");
+        } else {
+            serveramount = Integer.parseInt(args[0]);
+        }
+
+        ServerGenerator.startup(serveramount, true);
 
         System.out.println("Give any input to stop all servers");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,7 +38,7 @@ public class DataGeneratorEntry {
             Logger.getLogger(DataGeneratorEntry.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            ServerSetup.shutdown();
+            ServerGenerator.shutdown();
         } catch (Exception ex) {
             Logger.getLogger(DataGeneratorEntry.class.getName()).log(Level.SEVERE, null, ex);
         }

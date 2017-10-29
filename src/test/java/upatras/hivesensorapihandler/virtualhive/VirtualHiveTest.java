@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static upatras.hivesensorapihandler.utils.PostGetRequest.postrequest;
+import static upatras.hivesensorapihandler.utils.HttpRequests.postrequest;
 
 /**
  *
@@ -18,12 +18,12 @@ import static upatras.hivesensorapihandler.utils.PostGetRequest.postrequest;
 public class VirtualHiveTest {
 
     /**
-     * Test of shutdown method, of class VirtualHive.
+     * Test of shutdown method, of class VirtualHiveServer.
      */
     @Test
     public void testIntegration() throws Exception {
 
-        VirtualHive vh = new VirtualHive(10000);
+        VirtualHiveServer vh = new VirtualHiveServer(10000);
         vh.start();
 
         JSONObject request = new JSONObject();

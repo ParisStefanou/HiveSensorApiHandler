@@ -9,6 +9,6 @@ package upatras.hivesensorapihandler.virtualhive;
  *
  * @author Paris
  */
-public class ActionHandler {
+public class ChannelHandler {
     
 }

@@ -14,14 +14,15 @@ import org.mortbay.jetty.Server;
  *
  * @author Paris
  */
-public class VirtualHive extends Thread {
+public class VirtualHiveServer extends Thread {
 
     Server server = null;
     Semaphore started = new Semaphore(0);
+    private static final Logger LOGGER = Logger.getLogger(VirtualHiveServer.class.getName());
 
     final int port;
 
-    public VirtualHive(int port) {
+    public VirtualHiveServer(int port) {
         this.port = port;
     }
 
@@ -31,7 +32,7 @@ public class VirtualHive extends Thread {
         try {
             started.acquire();
         } catch (InterruptedException ex) {
-            Logger.getLogger(VirtualHive.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -42,22 +43,22 @@ public class VirtualHive extends Thread {
             server.start();
             server.setHandler(new HiveRequestHandler());
         } catch (Exception ex) {
-            System.err.println("Server running on port " + port + " encountered an error");
-            System.err.println(ex);
+            LOGGER.log(Level.SEVERE, "Server running on port " + port + " encountered an error");
+            LOGGER.log(Level.SEVERE, ex.toString());
         }
 
         started.release();
         try {
             server.join();
         } catch (InterruptedException ex) {
-            System.err.println("Server running on port " + port + " encountered an error");
-            System.err.println(ex);
+            LOGGER.log(Level.SEVERE, "Server running on port " + port + " encountered an error");
+            LOGGER.log(Level.SEVERE, ex.toString());
         }
 
     }
 
     void shutdown() throws Exception {
         server.stop();
-        System.err.println("Server running on port " + port + " was shut down normally");
+        LOGGER.log(Level.INFO, "Server running on port " + port + " was shut down normally");
     }
 }

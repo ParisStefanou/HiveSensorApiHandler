@@ -6,24 +6,29 @@
 package upatras.hivesensorapihandler.virtualhive;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Paris
  */
-public class ServerSetup {
+public class ServerGenerator {
 
-    public static ArrayList<VirtualHive> hiveservers = new ArrayList<>();
+    public static ArrayList<VirtualHiveServer> hiveservers = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(VirtualHiveServer.class.getName());
 
-    public static void startup(int count, boolean retryoncrash) {
+    public static ArrayList<VirtualHiveServer> startup(int count, boolean retryoncrash) {
         for (int i = 0; i < count; i++) {
             try {
-                hiveservers.add(new VirtualHive(10000 + i));
+                hiveservers.add(new VirtualHiveServer(10000 + i));
                 hiveservers.get(i).start();
             } catch (Exception e) {
-                System.err.println(e);
+                LOGGER.log(Level.SEVERE, e.toString());
             }
         }
+
+        return hiveservers;
     }
 
     public static void shutdown() throws Exception {

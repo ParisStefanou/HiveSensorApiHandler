@@ -29,7 +29,7 @@ import org.json.JSONObject;
  *
  * @author Paris
  */
-public class PostGetRequest {
+public class HttpRequests {
 
     public static void main(String[] args) {
         JSONObject request = new JSONObject();
@@ -64,7 +64,7 @@ public class PostGetRequest {
             try {
                 httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HttpRequests.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -74,7 +74,7 @@ public class PostGetRequest {
                 httppost.setEntity(postingString);
                 httppost.setHeader("content-type", "application/json");
             } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HttpRequests.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -88,9 +88,9 @@ public class PostGetRequest {
                 return jsonString;
             }
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HttpRequests.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException | UnsupportedOperationException ex) {
-            Logger.getLogger(PostGetRequest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HttpRequests.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
