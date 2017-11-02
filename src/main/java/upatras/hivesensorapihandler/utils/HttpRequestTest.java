@@ -17,7 +17,7 @@ public class HttpRequestTest {
 
     public static void main(String[] args) {
 
-        String response = postrequest("127.0.0.1", "/channels/temperature@Zh7wXYZq-JHrL-S54j-peNp-oQol2179", 10000, null, null);
+        String response = postrequest("127.0.0.1", "/channels/temperature@CCpLNHBF-HkRl-1Ir8-IrzW-9GGRyUNW", 10000, null, null);
         System.out.println("received : \n\n" + response);
 
     }
@@ -31,13 +31,11 @@ public class HttpRequestTest {
         data.put("password", "admin");
         data.put("caller", "WEB");
         
-
         session.put(data);
         request.put("sessions", session);
-
+        
         System.out.println("sending : \n\n" + JSONUtils.prettyprint(request));
         String response = postrequest("127.0.0.1", "/auth/sessions", 10000, null, request.toString());
         System.out.println("received : \n\n" + JSONUtils.prettyprint(response));
-
     }
 }

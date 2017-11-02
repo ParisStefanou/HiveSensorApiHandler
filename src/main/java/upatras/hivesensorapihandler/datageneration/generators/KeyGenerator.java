@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class KeyGenerator {
 
-    static Random rand = new Random();
+    static Random rand = new Random(0);
     static ArrayList<Character> allowedchars = new ArrayList<>();
 
     static {

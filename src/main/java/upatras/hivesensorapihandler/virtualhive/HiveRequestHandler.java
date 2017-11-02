@@ -13,53 +13,51 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.mortbay.jetty.handler.AbstractHandler;
-import upatras.hivesensorapihandler.virtualhive.sensors.Node;
-import upatras.hivesensorapihandler.virtualhive.sensors.TemperatureSensor;
+import upatras.hivesensorapihandler.virtualhive.get.ChannelHandler;
 
 /**
  *
  * @author Paris
  */
 public class HiveRequestHandler extends AbstractHandler {
-
+    
     VirtualHiveServer vhs;
-    Node node;
-
+    
     AuthenticationHandler authh = new AuthenticationHandler();
     DeviceListHandler scanh = new DeviceListHandler();
-
-    TemperatureSensor tmpsensor;
-
+    ChannelHandler channelh;
+    
     public HiveRequestHandler(VirtualHiveServer vhs) {
         this.vhs = vhs;
-        node = new Node(vhs);
-        tmpsensor = new TemperatureSensor(node);
+        channelh = new ChannelHandler(vhs);
     }
-
+    
     private static final Logger LOGGER = Logger.getLogger(HiveRequestHandler.class.getName());
-
+    
     @Override
-    public void handle(String string, HttpServletRequest baseRequest, HttpServletResponse response, int i) throws IOException, ServletException {
-
-        String trimmedstring = string.trim();
-
-        if (trimmedstring.equals("/auth/sessions")) {
-            authh.handle(string, baseRequest, response, i);
-        } else if (trimmedstring.equals("/nodes")) {
-
-        } else if (trimmedstring.equals("/events/")) {
-
-        } else if (trimmedstring.contains("/channels/")) {
-            if (trimmedstring.contains(tmpsensor.idstring)) {
-                System.out.println("Just testing");
-                System.out.println(tmpsensor.response(1000000l, 2000000l, "MINUTES", 5, "AVG"));
+    public void handle(String target, HttpServletRequest baseRequest, HttpServletResponse response, int dispatch) throws IOException, ServletException {
+        
+        try {
+            String trimmedstring = target.trim();
+            LOGGER.info("Received a request to path " + target);
+            if (trimmedstring.equals("/auth/sessions")) {
+                authh.handle(target, baseRequest, response, dispatch);
+            } else if (trimmedstring.equals("/nodes")) {
+                LOGGER.warning("WIP");
+            } else if (trimmedstring.equals("/events/")) {
+                LOGGER.warning("WIP");
+            } else if (trimmedstring.contains("/channels/")) {
+                channelh.handle(target, baseRequest, response, dispatch);
+            } else if (trimmedstring.equals("/users/")) {
+                LOGGER.warning("WIP");
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                LOGGER.warning("Connection request has been dropped, didn't match any of the servlet paths");
             }
-        } else if (trimmedstring.equals("/users/")) {
-
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            LOGGER.warning("Connection request has been dropped, didn't match any of the servlet paths");
+            
+        } catch (Exception ex) {
+            LOGGER.severe("An exception has occured when handling the request");
+            LOGGER.severe(ex.fillInStackTrace().getMessage());
         }
     }
-
 }

@@ -34,10 +34,6 @@ public class DataGeneratorEntry {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
             br.read();
-        } catch (IOException ex) {
-            Logger.getLogger(DataGeneratorEntry.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
             ServerGenerator.shutdown();
         } catch (Exception ex) {
             Logger.getLogger(DataGeneratorEntry.class.getName()).log(Level.SEVERE, null, ex);

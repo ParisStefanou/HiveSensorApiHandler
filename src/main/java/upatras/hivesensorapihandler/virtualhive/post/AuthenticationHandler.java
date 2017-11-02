@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mortbay.jetty.handler.AbstractHandler;
 import upatras.hivesensorapihandler.datageneration.generators.KeyGenerator;
 import upatras.hivesensorapihandler.datageneration.generators.NumberGenerator;
 import upatras.hivesensorapihandler.utils.JSONUtils;
@@ -25,7 +26,7 @@ import upatras.hivesensorapihandler.virtualhive.HiveRequestHandler;
  *
  * @author Paris
  */
-public class AuthenticationHandler {
+public class AuthenticationHandler extends AbstractHandler{
 
     HashMap<String, String> authorized = new HashMap();
     HashMap<Long, Boolean> active_sessions = new HashMap<Long, Boolean>();
@@ -38,6 +39,7 @@ public class AuthenticationHandler {
         authorized.put("admin", "admin");
     }
 
+    @Override
     public void handle(String string, HttpServletRequest baseRequest, HttpServletResponse response, int i) throws IOException, ServletException {
         String methodtype = baseRequest.getMethod();
         String debug_string = "";

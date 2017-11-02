@@ -8,6 +8,7 @@ package upatras.hivesensorapihandler.virtualhive.sensors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONObject;
+import org.mortbay.jetty.handler.AbstractHandler;
 import upatras.hivesensorapihandler.datageneration.generators.NumberGenerator;
 import upatras.hivesensorapihandler.utils.JSONUtils;
 
