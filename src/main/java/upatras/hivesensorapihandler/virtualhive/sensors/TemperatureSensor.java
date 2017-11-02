@@ -103,7 +103,7 @@ public class TemperatureSensor {
         response.put("links", new JSONObject().put("node", links));
         response.put("start", start);
         response.put("end", end);
-        response.put("timeunit", timeUnit);
+        response.put("timeUnit", timeUnit);
         response.put("rate", rate);
         response.put("unit", "CELSIUS");
         long step = (end - start) / 10;
