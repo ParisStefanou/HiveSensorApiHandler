@@ -20,7 +20,7 @@ public class DataGeneratorEntry {
 
     public static void main(String[] args) {
 
-        int serveramount = 1;
+        int serveramount = 2;
 
         if (args.length == 0) {
             System.out.println(" [amount of servers to start] default of 1");

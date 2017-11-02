@@ -37,6 +37,9 @@ public class HttpRequestTest {
 
         String response = getRequest("127.0.0.1", "/channels/temperature@CCpLNHBF-HkRl-1Ir8-IrzW-9GGRyUNW", 10000, parameters, null);
         System.out.println("received : \n\n" + JSONUtils.prettyprint(response));
+        
+         String response2 = getRequest("127.0.0.1", "/channels/temperature@kjFRZlW4-1fAv-WH5o-gjiq-2eJXQgPo", 10001, parameters, null);
+        System.out.println("received : \n\n" + JSONUtils.prettyprint(response2));
     }
 
     public static void authentication_test() {

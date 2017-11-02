@@ -14,10 +14,18 @@ import upatras.hivesensorapihandler.virtualhive.sensors.Measurement;
  */
 public class NumberGenerator {
 
-    public static Random random = new Random(0);
+    public static Random random;
 
     double prevtemp = 24;
     long counter = 0;
+
+    public NumberGenerator() {
+        random = new Random();
+    }
+
+    public NumberGenerator(int rngseed) {
+        random = new Random(rngseed);
+    }
 
     public Measurement generateTemperature() {
 
