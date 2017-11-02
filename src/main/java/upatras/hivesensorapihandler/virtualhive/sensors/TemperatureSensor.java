@@ -7,8 +7,8 @@ package upatras.hivesensorapihandler.virtualhive.sensors;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.json.JSONObject;
-import org.mortbay.jetty.handler.AbstractHandler;
 import upatras.hivesensorapihandler.datageneration.generators.NumberGenerator;
 import upatras.hivesensorapihandler.utils.JSONUtils;
 
@@ -68,6 +68,10 @@ public class TemperatureSensor {
     public final Node node;
     public final String sensorid;
     public final String idstring;
+    public boolean alive = true;
+    public long generationdelay = 5000;
+
+    public CircularFifoQueue<Measurement> timeseries = new CircularFifoQueue(1000);
 
     private static final Logger LOGGER = Logger.getLogger(TemperatureSensor.class.getName());
 
@@ -77,6 +81,10 @@ public class TemperatureSensor {
         idstring = "temperature@" + sensorid;
 
         LOGGER.log(Level.INFO, "Temperature sensor generated under node: " + idstring);
+
+        TemperatureValueGenerationThread valuegenerator = new TemperatureValueGenerationThread(this);
+        valuegenerator.start();
+
     }
 
     NumberGenerator ng = new NumberGenerator();
@@ -100,15 +108,69 @@ public class TemperatureSensor {
         response.put("unit", "CELSIUS");
         long step = (end - start) / 10;
         JSONObject values = new JSONObject();
-        for (int i = 0; i < 10; i++) {
-            values.put(Long.toString(start + step * i), ng.generateTemperature());
+        for (Measurement m : getValues(10)) {
+            values.put(Long.toString(m.dt.getMillis()), m.value);
         }
         response.put("values", values);
         response.put("operation", operation);
-
-        LOGGER.log(Level.INFO, "response : \n\n"+JSONUtils.prettyprint(response));
-        
         return response;
+    }
+
+    synchronized public Measurement[] getValues(int count) {
+
+        if (timeseries.size() - 1 < count) {
+
+            int actualcount = timeseries.size() - 1;
+
+            Measurement[] toreturn = new Measurement[actualcount];
+
+            for (int i = 0; i < actualcount; i++) {
+                toreturn[i] = timeseries.get(i);
+            }
+            return toreturn;
+        } else {
+
+            Measurement[] toreturn = new Measurement[count];
+
+            for (int i = timeseries.size() - 1; i > timeseries.size() - 1 - count; i--) {
+                toreturn[timeseries.size() - 1 - i] = timeseries.get(i);
+            }
+            return toreturn;
+        }
+
+    }
+
+    synchronized public void addData(Measurement m) {
+        timeseries.add(m);
+
+    }
+
+    private class TemperatureValueGenerationThread extends Thread {
+
+        TemperatureSensor sensor;
+
+        public TemperatureValueGenerationThread(TemperatureSensor sensor) {
+            this.sensor = sensor;
+        }
+
+        @Override
+        public void run() {
+
+            NumberGenerator ng = new NumberGenerator();
+
+            while (sensor.alive) {
+
+                try {
+                    sleep(sensor.generationdelay);
+                    sensor.addData(ng.generateTemperature());
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(TemperatureSensor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        }
+
     }
 
 }

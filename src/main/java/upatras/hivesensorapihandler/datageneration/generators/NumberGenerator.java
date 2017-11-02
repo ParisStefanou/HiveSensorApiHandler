@@ -6,6 +6,7 @@
 package upatras.hivesensorapihandler.datageneration.generators;
 
 import java.util.Random;
+import upatras.hivesensorapihandler.virtualhive.sensors.Measurement;
 
 /**
  *
@@ -18,12 +19,11 @@ public class NumberGenerator {
     double prevtemp = 24;
     long counter = 0;
 
-    public double generateTemperature() {
+    public Measurement generateTemperature() {
 
-        double change = (random.nextDouble()-0.5) * 10 * Math.sin(counter++ / 25.0 * Math.PI);
-
+        double change = (random.nextDouble() - 0.5) * 10 * Math.sin(counter++ / 25.0 * Math.PI);
         prevtemp = prevtemp + change;
-        return prevtemp;
+        return new Measurement(prevtemp);
 
     }
 

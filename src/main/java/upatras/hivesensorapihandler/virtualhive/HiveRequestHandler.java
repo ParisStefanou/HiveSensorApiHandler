@@ -8,6 +8,7 @@ package upatras.hivesensorapihandler.virtualhive;
 import upatras.hivesensorapihandler.virtualhive.get.DeviceListHandler;
 import upatras.hivesensorapihandler.virtualhive.post.AuthenticationHandler;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,23 +21,23 @@ import upatras.hivesensorapihandler.virtualhive.get.ChannelHandler;
  * @author Paris
  */
 public class HiveRequestHandler extends AbstractHandler {
-    
+
     VirtualHiveServer vhs;
-    
+
     AuthenticationHandler authh = new AuthenticationHandler();
     DeviceListHandler scanh = new DeviceListHandler();
     ChannelHandler channelh;
-    
+
     public HiveRequestHandler(VirtualHiveServer vhs) {
         this.vhs = vhs;
         channelh = new ChannelHandler(vhs);
     }
-    
+
     private static final Logger LOGGER = Logger.getLogger(HiveRequestHandler.class.getName());
-    
+
     @Override
     public void handle(String target, HttpServletRequest baseRequest, HttpServletResponse response, int dispatch) throws IOException, ServletException {
-        
+
         try {
             String trimmedstring = target.trim();
             LOGGER.info("Received a request to path " + target);
@@ -54,10 +55,10 @@ public class HiveRequestHandler extends AbstractHandler {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 LOGGER.warning("Connection request has been dropped, didn't match any of the servlet paths");
             }
-            
+
         } catch (Exception ex) {
             LOGGER.severe("An exception has occured when handling the request");
-            LOGGER.severe(ex.fillInStackTrace().getMessage());
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }
