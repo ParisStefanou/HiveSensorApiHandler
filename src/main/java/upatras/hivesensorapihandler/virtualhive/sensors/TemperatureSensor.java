@@ -108,8 +108,13 @@ public class TemperatureSensor {
         response.put("unit", "CELSIUS");
         long step = (end - start) / 10;
         JSONObject values = new JSONObject();
-        for (Measurement m : getValues(10)) {
-            values.put(Long.toString(m.dt.getMillis()), m.value);
+
+        Measurement[] measurements = getValues(10);
+
+        if (measurements != null && measurements.length > 0) {
+            for (Measurement m : measurements) {
+                values.put(Long.toString(m.dt.getMillis()), m.value);
+            }
         }
         response.put("values", values);
         response.put("operation", operation);
@@ -121,6 +126,10 @@ public class TemperatureSensor {
         if (timeseries.size() - 1 < count) {
 
             int actualcount = timeseries.size() - 1;
+
+            if (actualcount < 1) {
+                return null;
+            }
 
             Measurement[] toreturn = new Measurement[actualcount];
 

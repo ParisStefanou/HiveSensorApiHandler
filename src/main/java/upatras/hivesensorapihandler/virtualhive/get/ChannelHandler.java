@@ -7,6 +7,7 @@ package upatras.hivesensorapihandler.virtualhive.get;
 
 import com.google.gson.JsonObject;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,18 +38,33 @@ public class ChannelHandler extends AbstractHandler {
 
     @Override
     public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch) throws IOException, ServletException {
+
         if (target.contains(tmpsensor.idstring)) {
-            JSONObject toreturn = tmpsensor.response(1000000l, 2000000l, "MINUTES", 5, "AVG");
-            if (toreturn != null) {
-                LOGGER.info("Json that will be sent :\n\n" + JSONUtils.prettyprint(toreturn));
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().println(toreturn.toString());
-                response.flushBuffer();
-                LOGGER.info("sucessfully handled a channel request");
-            } else {
-                LOGGER.warning("temperature sensor didn't return any data");
+
+            try {
+                Long startime = Long.parseLong((String) request.getParameter("start"));
+                Long endtime = Long.parseLong((String) request.getParameter("end"));
+                Integer rate = Integer.parseInt((String) request.getParameter("rate"));
+                String timeUnit = (String) request.getParameter("timeUnit");
+                String operation = (String) request.getParameter("operation");
+
+                JSONObject toreturn = tmpsensor.response(startime, endtime, timeUnit, rate, operation);
+                if (toreturn != null) {
+                    LOGGER.info("Json that will be sent :\n\n" + JSONUtils.prettyprint(toreturn));
+                    response.setContentType("application/json");
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().println(toreturn.toString());
+                    response.flushBuffer();
+                    LOGGER.info("sucessfully handled a channel request");
+                } else {
+                    LOGGER.warning("temperature sensor didn't return any data");
+                }
+
+            } catch (IOException | NumberFormatException | NullPointerException ex) {
+                LOGGER.severe("An attribute was null");
+                LOGGER.log(Level.SEVERE, null, ex);
             }
+
         }
     }
 

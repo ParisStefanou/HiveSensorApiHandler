@@ -17,13 +17,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -31,8 +31,7 @@ import org.json.JSONObject;
  */
 public class HttpRequests {
 
-
-    public static String postrequest(String ip, String servlet_path, Integer port, ArrayList<Pair<String, String>> parameters, String body) {
+    public static String postRequest(String ip, String servlet_path, Integer port, ArrayList<Pair<String, String>> parameters, String body) {
 
         HttpClient httpclient = HttpClients.createDefault();
         String full_url = "http://" + ip + ":" + port + servlet_path;
@@ -65,6 +64,47 @@ public class HttpRequests {
         try {
 
             HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                String jsonString = EntityUtils.toString(response.getEntity());
+                return jsonString;
+            }
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(HttpRequests.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | UnsupportedOperationException ex) {
+            Logger.getLogger(HttpRequests.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public static String getRequest(String ip, String servlet_path, Integer port, ArrayList<Pair<String, String>> parameters, String body) {
+
+        HttpClient httpclient = HttpClients.createDefault();
+        String full_url = "http://" + ip + ":" + port + servlet_path;
+
+        if (!full_url.endsWith("?")) {
+            full_url += "?";
+        }
+
+        List<NameValuePair> params = new ArrayList<>();
+
+        if (parameters != null) {
+            for (int i = 0; i < parameters.size(); i++) {
+                params.add(new BasicNameValuePair(parameters.get(i).getKey(), parameters.get(i).getValue()));
+            }
+        }
+        String paramString = URLEncodedUtils.format(params, "utf-8");
+
+        full_url += paramString;
+
+        System.out.println("will connect to " + full_url);
+
+        HttpGet httpget = new HttpGet(full_url);
+
+        try {
+
+            HttpResponse response = httpclient.execute(httpget);
             HttpEntity entity = response.getEntity();
 
             if (entity != null) {

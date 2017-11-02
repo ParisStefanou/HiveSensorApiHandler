@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static upatras.hivesensorapihandler.utils.HttpRequests.postrequest;
+import static upatras.hivesensorapihandler.utils.HttpRequests.postRequest;
 
 /**
  *
@@ -37,11 +37,11 @@ public class VirtualHiveTest {
         session.put(data);
         request.put("sessions", session);
 
-        String response = postrequest("127.0.0.1", "/auth/sessions", 10000, null, request.toString());
+        String response = postRequest("127.0.0.1", "/auth/sessions", 10000, null, request.toString());
         if (!response.contains("sessionId")) {
             fail("expected a valid session id inside the returned json");
         }
-        String response2 = postrequest("127.0.0.1", "", 10000, null, request.toString());
+        String response2 = postRequest("127.0.0.1", "", 10000, null, request.toString());
         if (!response2.contains("404")) {
             fail("expected a not found when selecting a wrong path");
         }
@@ -57,7 +57,7 @@ public class VirtualHiveTest {
         session.put(data);
         request.put("sessions", session);
 
-        String response3 = postrequest("127.0.0.1", "/auth/sessions", 10000, null, request.toString());
+        String response3 = postRequest("127.0.0.1", "/auth/sessions", 10000, null, request.toString());
         if (!response3.contains("forbidden")) {
             fail("expected forbidden upon providing the wrong password");
         }
