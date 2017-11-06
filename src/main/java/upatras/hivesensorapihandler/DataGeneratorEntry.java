@@ -6,9 +6,9 @@
 package upatras.hivesensorapihandler;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import upatras.hivesensorapihandler.virtualhive.ServerGenerator;
 
@@ -20,7 +20,10 @@ public class DataGeneratorEntry {
 
     public static void main(String[] args) {
 
-        int serveramount = 2;
+        Logger rootLogger = LogManager.getLogManager().getLogger("");
+        rootLogger.setLevel(Level.WARNING);
+
+        int serveramount = 10000;
 
         if (args.length == 0) {
             System.out.println(" [amount of servers to start] default of 1");

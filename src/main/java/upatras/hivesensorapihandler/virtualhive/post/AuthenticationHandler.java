@@ -59,7 +59,7 @@ public class AuthenticationHandler extends AbstractHandler{
 
             }
 
-            LOGGER.info("received an http " + methodtype + " request with parameters:\n" + debug_string);
+            LOGGER.config("received an http " + methodtype + " request with parameters:\n" + debug_string);
 
             if (methodtype.equals("POST") || true) {
                 StringBuilder sb = new StringBuilder();
@@ -70,7 +70,7 @@ public class AuthenticationHandler extends AbstractHandler{
                     }
                 }
                 postdata = sb.toString();
-                LOGGER.info("post request contained data: " + JSONUtils.prettyprint(postdata));
+                LOGGER.config("post request contained data: " + JSONUtils.prettyprint(postdata));
 
                 JSONObject jsonpost;
 
@@ -89,7 +89,7 @@ public class AuthenticationHandler extends AbstractHandler{
                     response.setStatus(HttpServletResponse.SC_OK);
                     response.getWriter().println(responsejson.toString());
                     response.flushBuffer();
-                    LOGGER.info("sucessfully handled a request");
+                    LOGGER.config("sucessfully handled a request");
                 } else {
                     LOGGER.warning("authentication failed");
                     response.setContentType("application/json");
@@ -102,8 +102,8 @@ public class AuthenticationHandler extends AbstractHandler{
         } catch (Exception ex) {
             LOGGER.severe("failed to handle the request, attempting to print debug info");
             try {
-                LOGGER.info("received an http " + methodtype + " request with parameters:\n" + debug_string);
-                LOGGER.info("post request contained data: " + postdata);
+                LOGGER.config("received an http " + methodtype + " request with parameters:\n" + debug_string);
+                LOGGER.config("post request contained data: " + postdata);
             } catch (Exception ex2) {
 
             }
@@ -172,7 +172,7 @@ public class AuthenticationHandler extends AbstractHandler{
 
         session.put("sessionId", sessionid);
 
-        LOGGER.info("session with id " + sessionid + " has been authorized");
+        LOGGER.config("session with id " + sessionid + " has been authorized");
         active_sessions.put(Long.parseLong(sessionid), true);
 
         sessions[0] = session;

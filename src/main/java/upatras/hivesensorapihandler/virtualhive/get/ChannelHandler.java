@@ -34,6 +34,8 @@ public class ChannelHandler extends AbstractHandler {
     public ChannelHandler(VirtualHiveServer vhs) {
         hivenode = new Node(vhs);
         tmpsensor = new TemperatureSensor(hivenode);
+        
+        LOGGER.log(Level.INFO,"Server at port "+vhs.port+" handles hive node: "+hivenode.id);
     }
 
     @Override
@@ -50,12 +52,12 @@ public class ChannelHandler extends AbstractHandler {
 
                 JSONObject toreturn = tmpsensor.response(startime, endtime, timeUnit, rate, operation);
                 if (toreturn != null) {
-                    LOGGER.info("Json that will be sent :\n\n" + JSONUtils.prettyprint(toreturn));
+                    LOGGER.config("Json that will be sent :\n\n" + JSONUtils.prettyprint(toreturn));
                     response.setContentType("application/json");
                     response.setStatus(HttpServletResponse.SC_OK);
                     response.getWriter().println(toreturn.toString());
                     response.flushBuffer();
-                    LOGGER.info("sucessfully handled a channel request");
+                    LOGGER.config("sucessfully handled a channel request");
                 } else {
                     LOGGER.warning("temperature sensor didn't return any data");
                 }

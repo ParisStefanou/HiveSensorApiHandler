@@ -8,6 +8,7 @@ package upatras.hivesensorapihandler.virtualhive;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import upatras.hivesensorapihandler.datageneration.generators.KeyGenerator;
 
 /**
  *

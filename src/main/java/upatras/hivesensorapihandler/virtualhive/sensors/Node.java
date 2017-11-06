@@ -14,8 +14,8 @@ import upatras.hivesensorapihandler.virtualhive.VirtualHiveServer;
  */
 public class Node {
 
-    VirtualHiveServer vhs;
-    String id = KeyGenerator.generateNodeId();
+    public final VirtualHiveServer vhs;
+    public final String id = KeyGenerator.generateNodeId();
 
     public Node(VirtualHiveServer vhs) {
         this.vhs = vhs;

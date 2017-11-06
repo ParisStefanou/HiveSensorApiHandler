@@ -9,6 +9,7 @@ import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.mortbay.jetty.Server;
+import upatras.hivesensorapihandler.datageneration.generators.KeyGenerator;
 
 /**
  *
@@ -45,6 +46,9 @@ public class VirtualHiveServer extends Thread {
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Server running on port " + port + " encountered an error");
             ex.printStackTrace();
+            String consumedsensorid = KeyGenerator.generateNodeId();
+            LOGGER.log(Level.SEVERE, "lost sensor id: " + consumedsensorid);
+
         }
 
         started.release();
